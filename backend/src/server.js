@@ -3,6 +3,7 @@ import path from "path";
 import { clerkMiddleware } from '@clerk/express'
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
+import { start } from "repl";
 
 const app = express();
 
@@ -23,7 +24,11 @@ if(ENV.NODE_ENV === "production") {
     });
 }
 
-app.listen(ENV.PORT, () => {
-    console.log("Sever is starting and running")
-    connectDB();
-});
+const startServer = async () => {
+    await connectDB();
+    app.listen(ENV.PORT, () => {
+        console.log("Server is starting and running");
+    });
+};
+
+startServer();
