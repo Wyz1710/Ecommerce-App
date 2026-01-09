@@ -53,7 +53,7 @@ export async function getUserOrder(req,res) {
 
         const orderIds = orders.map(order => order._id);
         const reviews = await Review.find({orderId: {$in:orderIds}});
-        const reviewedOrderIds = new Set(reviews.map(review => review.orderId.toString());)
+        const reviewedOrderIds = new Set(reviews.map(review => review.orderId.toString()));
 
         const ordersWithReviewStatus = await Promise.all(
             orders.map(async (order) => {
