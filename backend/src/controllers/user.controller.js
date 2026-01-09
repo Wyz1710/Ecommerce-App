@@ -4,6 +4,11 @@ export async function addAddress(req,res) {
     try {
         const { label, fullName, streetAddress, city, state, zipCode, phoneNumber, isDefault} = req.body;
         const user = req.user;
+
+        if(!fullName || !streetAddress || !city || !state || !zipCode) {
+            return res.status(400).json({error: "Missing required field"});
+        }
+
         if (isDefault) {
             user.addresses.forEach((addr) => {
                 addr.isDefault = false;
@@ -134,7 +139,7 @@ export async function removeFromWishlist(req,res) {
 
 export async function getWishlist(req,res) {
     try {
-        const user = req.user;
+        const user = await user.findById(req.user._id).populate("wishlist");
         res.status(200).json({wishlist: user.wishlist});
         
     } catch (error) {
